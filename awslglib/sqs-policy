@@ -1,0 +1,27 @@
+{
+  "Version": "2012-10-17",
+  "Id": "arn:aws:sqs:us-east-1:072182941009:stg-notificationscenter_products_domain_events/SQSDefaultPolicy",
+  "Statement": [
+    {
+      "Sid": "Sid1475760763009",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::072182941009:user/sqs_stg-notificationscenter_products_domain_events"
+      },
+      "Action": "SQS:*",
+      "Resource": "arn:aws:sqs:us-east-1:072182941009:stg-notificationscenter_products_domain_events"
+    },
+    {
+      "Sid": "Sid1475770354069",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "SQS:*",
+      "Resource": "arn:aws:sqs:us-east-1:072182941009:stg-notificationscenter_products_domain_events",
+      "Condition": {
+        "StringEquals": {
+          "aws:SourceArn": "arn:aws:sns:us-east-1:072182941009:stg-api_domain_events"
+        }
+      }
+    }
+  ]
+}
