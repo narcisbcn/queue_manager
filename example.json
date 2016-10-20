@@ -1,18 +1,17 @@
 {
   "user": 'sqs-stg-foo',
-  "sqs": {
-    "sqs-a": {
-      "perms": [
-        'send',
-        'get'
-      ],
+  "sqs": [
+    {
+      "name": "sqs-A"
+      "perms": ['send','get'],
       "sns": "sns-foo"
     },
-    "sqs-b": {
+    {
+      "name": "sqs-B"
       "perms": ['*'],
       "sns": "sns-fee"
     },
-  }
+  ]
 }
 
 
