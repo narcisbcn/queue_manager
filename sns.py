@@ -7,7 +7,7 @@ import os, sys
 from awslglib.core.config import Config
 from awslglib.SNS.sns import SnsManager
 from awslglib.IAM.iammanager import IamManager
-from awslglib.IAM.sqsmanager import SqsManager
+from awslglib.SQS.sqsmanager import SqsManager
 
 
 
@@ -17,11 +17,14 @@ from awslglib.IAM.sqsmanager import SqsManager
 def main():
   settings = Config()
 
+  import boto.sqs
 
+  sqs = SqsManager(settings)
 
-
-
-  sqs = SnsManager(settings)
+  sqs.create_queue('narcis4')
+  #sqs.add_permission()
+  #sqs.create_queue('narcis')
+  #print dir(sqs)
   #qs = sns.get_all_queues('narcis')
   #print qs
   #print qs[0].get_timeout()
