@@ -1,13 +1,9 @@
 #!/usr/bin/env python
-import time
-import re
-import os
 import boto.sqs
-import argparse
 
 
 
-class SnsManager(object):
+class SqsManager(object):
 
   def __init__(self,object):
     self.conn = self.__get_boto_conn(object)
@@ -27,8 +23,3 @@ class SnsManager(object):
 
   def get_all_queues(self, prefix=None):
       return self.conn.get_all_queues(prefix)
-
-
-  #def create_queue(self):
-
-

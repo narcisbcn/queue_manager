@@ -43,9 +43,9 @@ class Config:
       config.read(self._inifile)
 
       options = config.options('CONFIG')
+
       for option in options:
           self._iniconfigs[option] = config.get('CONFIG', option)
-
 
 
 

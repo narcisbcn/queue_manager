@@ -43,13 +43,22 @@ class IamManager(object):
   def create_user(self,name):
 
     if self.validate_name(name):
-      self.conn.create_user(name)
+        
+      try:
+        print "foo"
+        self.conn.create_user(name)
+        user = self.conn.create_access_key(name)
+        self.secretID = user.access_key_id
+        self.secterKey = user.secret_access_key
+
+      except Exception:
+        print "User already exists"
+        pass
+
       self.name = name
       self.add_environment()
-      self.attach_group()
-      user = self.conn.create_access_key(name)
-      self.secretID  = user.access_key_id
-      self.secterKey = user.secret_access_key
+      #self.attach_group()
+
 
 
   def attach_group(self):
