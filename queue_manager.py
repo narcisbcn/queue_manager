@@ -15,18 +15,37 @@ from awslglib.core.policy_generator import *
 
 
 def main():
+
+  usage = 'Usage: %prog [options] arg1 arg2'
+  parser = argparse.ArgumentParser()
+
+  parser.add_argument('-u', '--iam',     dest='username', type=str,  help = 'Username who want to create or associate a resource')
+  parser.add_argument('-q', '--sqs',     dest='sqs',      type=str,  help = 'SQS name')
+  parser.add_argument('-a', '--sqsact',  dest='sqsact',   type=str,  help = 'SQS Actions')
+  parser.add_argument('-s', '--sns',     dest='sns',      type=str,  help = 'SNS name')
+  parser.add_argument('-p', '--snsact',  dest='snsact',   type=str,  help = 'SNS Actions')
+
+  args = parser.parse_args()
+
+  username = args.username
+  sqsname  = args.sqs
+  sqsact   = args.sqsact
+  snsname  = args.sns
+  snsact   = args.snsact
+
+  # Example:
+  #username = 'sqs_stg-narcis'
+  #sqsname  = 'narcis-sqs'
+  #snsname  = 'narcis-sns'
+
+
   settings = Config()
-
-  import boto.sqs
-
   sqs = SqsManager(settings)
   iam = IamManager(settings)
   sns = SnsManager(settings)
 
 
-  username = 'sqs_stg-narcis'
-  sqsname  = 'narcis-sqs'
-  snsname  = 'narcis-sns'
+
 
 
 
@@ -54,8 +73,8 @@ def main():
 
   #Policy
 
-  my_policy = generate_policy(sqs=sqsname, sqs_perms='SendMessage', iam=username)
-  sqs.attach_policy(my_policy)
+  my_policy = generate_policy(sqs=sqsname, sns=snsname, sqs_perms=sqsact, iam=username)
+  sqs.attach_policy(queue, my_policy)
 
 
   sys.exit(0)

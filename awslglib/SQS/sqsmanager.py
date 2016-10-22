@@ -24,9 +24,10 @@ class SqsManager(object):
 
 
   def create_queue(self, name):
-    queue = self.conn.create_queue(name)
-    self.arn = queue.arn
-    self.url = queue.url
+    queue         = self.conn.create_queue(name)
+    self.arn      = queue.arn
+    self.url      = queue.url
+    self.queueobj = queue
     print "Queue created successfully: " + name
 
   def get_arn(self):
@@ -37,40 +38,8 @@ class SqsManager(object):
 
 
 
-  def attach_policy(self,policy):
-    import json
-    policy2 = json.dumps({
-        "Version": "2008-10-17",
-        "Id": "98728687",
-        "Statement": [
-          {
-            "Sid": "sqs-narcis4",
-            "Effect": "Allow",
-            "Principal": {
-              "AWS": "arn:aws:iam::072182941009:user/narcis.pillao"
-           },
-           "Action": "SQS:ReceiveMessage",
-            "Resource": "arn:aws:sqs:us-west-1:072182941009:narcis4"
-         },
-          {
-            "Sid": "Sid1475226761446",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "SQS:SendMessage",
-            "Resource": "arn:aws:sqs:us-west-1:072182941009:narcis4",
-            "Condition": {
-              "StringEquals": {
-                "aws:SourceArn": "arn:aws:sns:us-west-1:072182941009:narcis-sns"
-              }
-            }
-          }
-        ]
-    })
+  def attach_policy(self, queue, policy):
+    self.conn.set_queue_attribute(self.queueobj, 'Policy', policy )
+    print "Policy attached successfully!"
 
-    ## connection.set_queue_attribute(queue, 'Policy', json.dumps({
-    queue = self.conn.create_queue('narcis4')
-    print "queue created"
-    print policy
-    print policy2
-    self.conn.set_queue_attribute(queue, 'Policy', policy )
 
