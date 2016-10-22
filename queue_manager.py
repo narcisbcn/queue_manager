@@ -2,7 +2,7 @@
 # PYTHON_ARGCOMPLETE_OK
 import argparse
 import os, sys
-#import logging
+import logging
 
 from awslglib.core.config import Config
 from awslglib.SNS.sns import SnsManager
@@ -11,10 +11,10 @@ from awslglib.SQS.sqsmanager import SqsManager
 from awslglib.core.policy_generator import *
 
 
-
-
-
 def main():
+
+  logging.getLogger('boto').setLevel(logging.CRITICAL)
+  logging.basicConfig(level=logging.INFO)
 
   usage = 'Usage: %prog [options] arg1 arg2'
   parser = argparse.ArgumentParser()
@@ -46,13 +46,10 @@ def main():
 
 
 
-
-
-
   # Crear un usari:
   iam.create_user(username)
   if iam.is_a_new_user():
-    print "User created: " + iam.show_user_name()
+    logging.info("User created: " + iam.show_user_name())
     print "ID for user " +  iam.show_user_name() + ": " + iam.show_secretID()
     print "Keys for user " +  iam.show_user_name() + ": " + iam.show_secretKey()
 
@@ -65,19 +62,19 @@ def main():
 
 
 
-  # Create SNS and subscribe the SQS
-  sns.create_topic(snsname)
-  topicarn = sns.get_topciarn()
-  sns.subscribe_to_topic(topicarn, queuearn)
+  if snsname:
+    # Create SNS and subscribe the SQS
+    sns.create_topic(snsname)
+    topicarn = sns.get_topciarn()
+    sns.subscribe_to_topic(topicarn, queuearn)
 
+    #Policy
+    my_policy = generate_policy(sqs=sqsname, sns=snsname, sqs_perms=sqsact, iam=username, sns_perms=snsact)
+  else:
+    my_policy = generate_policy(sqs=sqsname, sqs_perms=sqsact, iam=username)
 
-  #Policy
+  sqs.attach_policy(my_policy)
 
-  my_policy = generate_policy(sqs=sqsname, sns=snsname, sqs_perms=sqsact, iam=username)
-  sqs.attach_policy(queue, my_policy)
-
-
-  sys.exit(0)
 
 
 

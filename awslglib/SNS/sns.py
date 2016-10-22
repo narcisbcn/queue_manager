@@ -1,15 +1,13 @@
 #!/usr/bin/env python
-import time
-import re
 import os
 import boto.sns
-import argparse
-
+import logging
 
 
 class SnsManager(object):
 
   def __init__(self,config):
+
     self.config = config
     self.conn = self.__get_boto_conn()
 
@@ -24,13 +22,19 @@ class SnsManager(object):
 
 
   def create_topic(self, name):
+    """
+    This creates a topic
+    :param name: topc name
+    :return: Nothing, topic is stored as an object
+    """
     topic = self.conn.create_topic(name)
     self.topicarn = topic['CreateTopicResponse']['CreateTopicResult']['TopicArn']
-    print "SNS created successfully: " + name
+    logging.info("SNS topic created successfully: " + name)
+
 
   def subscribe_to_topic(self, arntopic, arnendpoint, protocol='sqs'):
     self.conn.subscribe(arntopic, protocol, arnendpoint)
-    print "Endpoint: " + arnendpoint + " subscribed to topic: " + arntopic
+    logging.info("Endpoint: " + arnendpoint + " subscribed to topic: " + arntopic)
 
 
   def get_topciarn(self):

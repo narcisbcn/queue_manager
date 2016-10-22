@@ -4,6 +4,7 @@ import time
 import re
 import os
 import boto.iam
+import logging
 
 class IamManager(object):
 
@@ -35,7 +36,7 @@ class IamManager(object):
 
       except Exception:
         self.new = False
-        print "User already exists: " + name
+        logging.info("User created: " + name)
         pass
 
       self.name = name
