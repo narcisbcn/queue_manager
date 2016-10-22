@@ -25,4 +25,7 @@ class SqsManager(object):
 
   def create_queue(self, name):
     queue = self.conn.create_queue(name)
-    self.conn.add_permission(queue, 'NarcisSendmessage', '072182941009', 'SendMessage')
+    self.conn.add_permission(queue, 'NarcisSendmessage', '*', 'SendMessage')
+    print queue.get_attributes()
+    print "ok"
+    ## connection.set_queue_attribute(queue, 'Policy', json.dumps({
