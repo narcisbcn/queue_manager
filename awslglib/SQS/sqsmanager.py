@@ -24,11 +24,17 @@ class SqsManager(object):
 
 
   def create_queue(self, name):
-    import json
     queue = self.conn.create_queue(name)
-    #self.conn.add_permission(queue, 'NarcisSendmessage', '072182941009', 'SendMessage')
-    #print queue.get_attributes()
-    print "ok"
+    self.arn = queue.arn
+    self.url = queue.url
+    print "Queue created successfully: " + name
+
+  def get_arn(self):
+    return self.arn
+
+  def get_url(self):
+    return self.url
+
 
 
   def attach_policy(self,policy):

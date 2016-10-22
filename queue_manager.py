@@ -38,32 +38,27 @@ def main():
     print "Keys for user " +  iam.show_user_name() + ": " + iam.show_secretKey()
 
 
-  sys.exit(0)
 
-  sqs.create_queue(narcis-sqs)
-  #sqs.add_permission()
-
-  #qs = sns.get_all_queues('narcis')
-  #print qs
-  #print qs[0].get_timeout()
-  #print dir(qs[0])
-
+  # Create queue
+  queue    = sqs.create_queue(sqsname)
+  queuearn =  sqs.get_arn()
+  queueurl =  sqs.get_url()
 
 
 
   # Create SNS and subscribe the SQS
-  topic = sns.create_topic('narcis-sns')
-  topicarn = topic['CreateTopicResponse']['CreateTopicResult']['TopicArn']
-  sns.subscribe_to_topic(topicarn,'arn:aws:sqs:us-west-1:072182941009:narcis4')
-
-
+  sns.create_topic(snsname)
+  topicarn = sns.get_topciarn()
+  sns.subscribe_to_topic(topicarn, queuearn)
 
 
   #Policy
-  #my_policy = generate_policy(sqs='narcis4',sqs_perms='SendMessage', iam='narcis.pillao')
-  #sqs.attach_policy(my_policy)
+
+  my_policy = generate_policy(sqs=sqsname, sqs_perms='SendMessage', iam=username)
+  sqs.attach_policy(my_policy)
 
 
+  sys.exit(0)
 
 
 

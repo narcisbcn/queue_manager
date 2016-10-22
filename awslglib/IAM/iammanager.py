@@ -35,7 +35,7 @@ class IamManager(object):
 
       except Exception:
         self.new = False
-        print "User already exists"
+        print "User already exists: " + name
         pass
 
       self.name = name

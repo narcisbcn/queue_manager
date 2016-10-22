@@ -23,16 +23,18 @@ class SnsManager(object):
     return conn
 
 
-
   def create_topic(self, name):
-    return self.conn.create_topic(name)
+    topic = self.conn.create_topic(name)
+    self.topicarn = topic['CreateTopicResponse']['CreateTopicResult']['TopicArn']
+    print "SNS created successfully: " + name
 
   def subscribe_to_topic(self, arntopic, arnendpoint, protocol='sqs'):
-    return self.conn.subscribe(arntopic, protocol, arnendpoint)
+    self.conn.subscribe(arntopic, protocol, arnendpoint)
+    print "Endpoint: " + arnendpoint + " subscribed to topic: " + arntopic
 
-  # set subscription attributes
 
-
+  def get_topciarn(self):
+    return self.topicarn
 
 
 
