@@ -47,10 +47,13 @@ def main():
 
 
   settings = Config()
+  account = settings.get_param('account_id')
+  region  = settings.get_param('region')
+
+  # Creating objects from inherit settings
   sqs = SqsManager(settings)
   iam = IamManager(settings)
   sns = SnsManager(settings)
-
 
 
   # Crear un usari:
@@ -75,9 +78,9 @@ def main():
     sns.subscribe_to_topic(topicarn, queuearn)
 
     #Policy
-    my_policy = generate_policy(sqs=sqsname, sns=snsname, sqs_perms=sqsact, iam=username, sns_perms=snsact)
+    my_policy = generate_policy(sqs=sqsname, sns=snsname, sqs_perms=sqsact, iam=username, sns_perms=snsact, account=account, region=region)
   else:
-    my_policy = generate_policy(sqs=sqsname, sqs_perms=sqsact, iam=username)
+    my_policy = generate_policy(sqs=sqsname, sqs_perms=sqsact, iam=username, account=account, region=region)
 
   sqs.attach_policy(my_policy)
 

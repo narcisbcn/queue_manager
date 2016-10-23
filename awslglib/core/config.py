@@ -49,4 +49,6 @@ class Config:
 
 
 
-
+  def get_param(self,param):
+      if self._iniconfigs[param]:
+          return self._iniconfigs[param]

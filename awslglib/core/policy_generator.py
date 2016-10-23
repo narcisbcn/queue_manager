@@ -2,7 +2,7 @@ import json
 import random, sys
 
 
-def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None, sns_perms=None):
+def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None, sns_perms=None, account='fake', region='fake'):
   """
   Creates a json file from below parameters
   :param sqs: sqs name
@@ -13,6 +13,8 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
   :param sns_perms: Acctions: SendMessage * ReceiveMessage * DeleteMessage * ChangeMessageVisibility * GetQueueAttributes
   :return: json
   """
+
+  account = str(account)
 
   _sqs_perms = generate_action(sqs_perms)
   _sns_perms = generate_action(sns_perms)
@@ -28,20 +30,20 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
                 "Sid": str(sqs) + "-" + str(sid),
                 "Effect": effect,
                 "Principal": {
-                    "AWS": "arn:aws:iam::072182941009:user/" + iam
+                    "AWS": "arn:aws:iam::" + account + ":user/" + iam
                 },
                 "Action": _sqs_perms,
-                "Resource": "arn:aws:sqs:us-west-1:072182941009:" + sqs
+                "Resource": "arn:aws:sqs:" + region + ":" + account + ":" + sqs
             },
             {
                 "Sid": str(sns) + "-" + str(sid),
                 "Effect": effect,
                 "Principal": "*",
                 "Action": _sns_perms,
-                "Resource": "arn:aws:sqs:us-west-1:072182941009:" + sqs,
+                "Resource": "arn:aws:sqs:" + region + ":" + account + ":" + sqs,
                 "Condition": {
                     "ArnEquals": {
-                        "aws:SourceArn": "arn:aws:sns:us-west-1:072182941009:" + sns
+                        "aws:SourceArn": "arn:aws:sns:" + region + ":" + account + ":" + sns
                     }
                 }
             }
@@ -56,10 +58,10 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
                   "Sid": str(sqs) + "-" + str(sid),
                   "Effect": effect,
                   "Principal": {
-                      "AWS": "arn:aws:iam::072182941009:user/" + iam
+                      "AWS": "arn:aws:iam::" + account + ":user/" + iam
                   },
                   "Action": _sqs_perms,
-                  "Resource": "arn:aws:sqs:us-west-1:072182941009:" + sqs
+                  "Resource": "arn:aws:sqs:" + region + ":" + account + ":" + sqs
               }
           ]
       }, sort_keys=None)
@@ -79,7 +81,6 @@ def generate_action(act):
     else:
         action = list()
         for element in act:
-            print element
             action.append("SQS:" + element)
 
     return action
