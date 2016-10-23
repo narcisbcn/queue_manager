@@ -19,15 +19,16 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
   _sqs_perms = generate_action(sqs_perms)
   _sns_perms = generate_action(sns_perms)
 
-  sid = str(random.randint(19999999,999999999))
+  sid  = str(random.randint(1000000000000,9999999999999))
 
   if sns is not None:
+    sid2 = str(random.randint(1000000000000, 9999999999999))
     policy = json.dumps({
        "Version": "2008-10-17",
        "Id": sid,
         "Statement":  [
             {
-                "Sid": str(sqs) + "-" + str(sid),
+                "Sid": "Sid" + str(sid),
                 "Effect": effect,
                 "Principal": {
                     "AWS": "arn:aws:iam::" + account + ":user/" + iam
@@ -36,7 +37,7 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
                 "Resource": "arn:aws:sqs:" + region + ":" + account + ":" + sqs
             },
             {
-                "Sid": str(sns) + "-" + str(sid),
+                "Sid": "Sid" + str(sid2),
                 "Effect": effect,
                 "Principal": "*",
                 "Action": _sns_perms,
@@ -55,7 +56,7 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
           "Id": sid,
           "Statement": [
               {
-                  "Sid": str(sqs) + "-" + str(sid),
+                  "Sid": "Sid" + str(sid),
                   "Effect": effect,
                   "Principal": {
                       "AWS": "arn:aws:iam::" + account + ":user/" + iam

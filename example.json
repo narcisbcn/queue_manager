@@ -15,9 +15,3 @@
 }
 
 
-
-
--i : crear IAM
--q : crear sqs
--n : crear sns
--j : crear stack
