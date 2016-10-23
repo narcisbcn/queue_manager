@@ -42,10 +42,10 @@ class Config:
       config.optionxform = str
       config.read(self._inifile)
 
-      options = config.options('CONFIG')
+      options = config.options('AUTH')
 
       for option in options:
-          self._iniconfigs[option] = config.get('CONFIG', option)
+          self._iniconfigs[option] = config.get('AUTH', option)
 
 
 

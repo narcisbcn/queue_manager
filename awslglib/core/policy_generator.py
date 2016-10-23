@@ -1,5 +1,5 @@
 import json
-import random
+import random, sys
 
 
 def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None, sns_perms=None):
@@ -14,6 +14,8 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
   :return: json
   """
 
+  _sqs_perms = generate_action(sqs_perms)
+  _sns_perms = generate_action(sns_perms)
 
   sid = str(random.randint(19999999,999999999))
 
@@ -28,14 +30,14 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
                 "Principal": {
                     "AWS": "arn:aws:iam::072182941009:user/" + iam
                 },
-                "Action": 'SQS:' + sqs_perms,
+                "Action": _sqs_perms,
                 "Resource": "arn:aws:sqs:us-west-1:072182941009:" + sqs
             },
             {
                 "Sid": str(sns) + "-" + str(sid),
                 "Effect": effect,
                 "Principal": "*",
-                "Action": 'SQS:' + sns_perms,
+                "Action": _sns_perms,
                 "Resource": "arn:aws:sqs:us-west-1:072182941009:" + sqs,
                 "Condition": {
                     "ArnEquals": {
@@ -56,12 +58,28 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
                   "Principal": {
                       "AWS": "arn:aws:iam::072182941009:user/" + iam
                   },
-                  "Action": 'SQS:' + sqs_perms,
+                  "Action": _sqs_perms,
                   "Resource": "arn:aws:sqs:us-west-1:072182941009:" + sqs
               }
           ]
       }, sort_keys=None)
 
-
   return policy
 
+
+def generate_action(act):
+    """
+    Description: This function merges SQS actions, regardless whether are single or multiple actions
+    params: The action
+    """
+
+    if type(act) is str:
+        action = "SQS:" + act
+
+    else:
+        action = list()
+        for element in act:
+            print element
+            action.append("SQS:" + element)
+
+    return action
