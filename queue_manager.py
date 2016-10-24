@@ -49,7 +49,6 @@ def main():
   region  = settings.get_param('region')
 
   # Creating objects from inherit settings
-  sqs = SqsManager(settings)
   iam = IamManager(settings)
   sns = SnsManager(settings)
 
@@ -64,10 +63,12 @@ def main():
 
   # Create queue
   if sqsname:
-    queue    = sqs.create_queue(sqsname)
+    sqs = SqsManager(settings, sqsname)
+    queue    = sqs.create_queue()
     queuearn =  sqs.get_arn()
     queueurl =  sqs.get_url()
     logging.info("SQS URL: " + queueurl)
+    while sqs.queue_exists() == None: continue
 
   # Create SNS and subscribe the SQS
   if snsname:

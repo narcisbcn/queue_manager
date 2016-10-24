@@ -1,8 +1,9 @@
 import json
 import random, sys
+import logging
 
 
-def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None, sns_perms=None, account='fake', region='fake'):
+def generate_policy(sqs=None, effect='Allow', sqs_perms='*', sns=None, iam=None, sns_perms='*', account='fake', region='fake'):
   """
   Creates a json file from below parameters
   :param sqs: sqs name
@@ -66,6 +67,8 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms=None, sns=None, iam=None
               }
           ]
       }, sort_keys=None)
+
+  logging.debug("Policy: " + policy)
 
   return policy
 

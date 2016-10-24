@@ -1,13 +1,16 @@
 #!/usr/bin/env python
 import boto.sqs
 import logging
+import sys
+import string
 
 
 
 class SqsManager(object):
 
-  def __init__(self,config):
+  def __init__(self, config, name):
     self.config = config
+    self.name = name
     self.conn = self.__get_boto_conn()
 
   def __get_boto_conn(self):
@@ -24,16 +27,26 @@ class SqsManager(object):
     return self.conn.get_all_queues(prefix)
 
 
-  def create_queue(self, name):
-    queue         = self.conn.create_queue(name)
+  def create_queue(self):
+
+    if not self.validate_name():
+      logging.critical("Queue " + self.name + "is longer than allowed characters (80), choose a shorter name. Aborting")
+      sys.exit(1)
+
+    if self.queue_exists() is not None:
+      logging.critical("Queue " + self.name + "already exists, if you do proceed, you are going to overwrite the current policy, revoking then its permissions")
+      #sys.exit(1)
+
+    queue         = self.conn.create_queue(self.name)
     self.arn      = queue.arn
     self.url      = queue.url
     self.queueobj = queue
-    logging.info("Queue created successfully: " + name)
+    logging.info("Queue created successfully: " + self.name)
 
 
   def get_arn(self):
     return self.arn
+
 
   def get_url(self):
     return self.url
@@ -50,3 +63,12 @@ class SqsManager(object):
     logging.info("Policy attached successfully!")
 
 
+  def queue_exists(self):
+
+     return self.conn.get_queue(self.name)
+
+  def validate_name(self):
+    if len(self.name) < 80:
+      return True
+    else:
+      return False
