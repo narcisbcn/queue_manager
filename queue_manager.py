@@ -22,7 +22,7 @@ def main():
   logging.getLogger('boto').setLevel(logging.CRITICAL)
   logging.basicConfig(level=logging.INFO)
 
-  usage = 'Usage: %prog [options] arg1 arg2'
+  usage = 'Usage: %prog [options] arg1 arg2. Example: queue_manager.py --iam sqs_stg-userbname --sqs sqs-name --sqsact '*' --sns sns-name --snsact SendMessage DeleteMessage '
   parser = argparse.ArgumentParser()
   actions = [ 'SendMessage', '*', 'ReceiveMessage', 'DeleteMessage', 'ChangeMessageVisibility' 'GetQueueAttributes']
 
