@@ -69,7 +69,7 @@ def main():
     queue    = sqs.create_queue(sqsname)
     queuearn =  sqs.get_arn()
     queueurl =  sqs.get_url()
-
+    logging.info("SQS URL: " + queueurl)
 
   # Create SNS and subscribe the SQS
   if snsname:
