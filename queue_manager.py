@@ -12,9 +12,7 @@ from awslglib.SQS.sqsmanager import SqsManager
 
 
 # Example:
-# ./queue_manager.py --iam sqs_stg-narcis --sqs narcis-sqs --sqsact '*' --sns narcis-sns --snsact SendMessage DeleteMessage
-
-
+# queue_manager.py --iam sqs_stg-user_name --sqs sqs-name --sqsact '*' --sns sns-name --snsact SendMessage DeleteMessage "
 
 
 def main():
@@ -22,7 +20,7 @@ def main():
   logging.getLogger('boto').setLevel(logging.CRITICAL)
   logging.basicConfig(level=logging.INFO)
 
-  usage = 'Usage: %prog [options] arg1 arg2. Example: queue_manager.py --iam sqs_stg-userbname --sqs sqs-name --sqsact '*' --sns sns-name --snsact SendMessage DeleteMessage '
+  usage = "Usage: %prog [options] arg1 arg2"
   parser = argparse.ArgumentParser()
   actions = [ 'SendMessage', '*', 'ReceiveMessage', 'DeleteMessage', 'ChangeMessageVisibility' 'GetQueueAttributes']
 

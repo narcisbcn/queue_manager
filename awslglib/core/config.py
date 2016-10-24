@@ -17,7 +17,7 @@ class Config:
 
   def load_ini(self):
       config_file_paths = [
-          '~/awslglib.ini',
+          '~/.awslglib.ini',
           '/etc/awslglib.ini',
           os.path.realpath(os.path.dirname(__file__) + '/../../defaults.ini'),
       ]
