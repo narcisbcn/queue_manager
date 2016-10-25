@@ -8,9 +8,10 @@ import logging
 
 class IamManager(object):
 
-  def __init__(self,object):
+  def __init__(self,object,name):
     self.conn = self.__get_boto_conn(object)
     self.new = True
+    self.name = name
 
 
   def __get_boto_conn(self,object):
@@ -24,22 +25,21 @@ class IamManager(object):
     return conn
 
 
-  def create_user(self,name):
+  def create_user(self):
 
-    if self.validate_name(name):
+    if self.validate_name():
 
       try:
-        self.conn.create_user(name)
-        user = self.conn.create_access_key(name)
+        self.conn.create_user(self.name)
+        user = self.conn.create_access_key(self.name)
         self.secretID = user.access_key_id
         self.secterKey = user.secret_access_key
 
       except Exception:
         self.new = False
-        logging.info("User created: " + name)
+        logging.info("User created: " + self.name)
         pass
 
-      self.name = name
       self.add_environment()
 
 
@@ -51,12 +51,12 @@ class IamManager(object):
 
 
 
-  def validate_name(self,name):
-      if name.startswith('sqs_stg-') or name.startswith('sqs_pro-'):
+  def validate_name(self,):
+      if self.name.startswith('sqs_stg-') or self.name.startswith('sqs_pro-'):
         return True
       else:
-        print "This user does not match Letgo naming connvention, name must start by sqs_ENV-*. Aborting!"
-        raise
+        logging.critical("This user does not match Letgo naming connvention, name must start by sqs_ENV-*. Aborting!")
+        sys.exit(1)
 
   def show_secretID(self):
       if self.new:

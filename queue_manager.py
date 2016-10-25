@@ -48,18 +48,22 @@ def main():
   account = settings.get_param('account_id')
   region  = settings.get_param('region')
 
+  # Username is mandatory
+  if username is None:
+    logging.critical('you must provide an username')
+    sys.exit(1)
+
   # Creating objects from inherit settings
-  iam = IamManager(settings)
+  iam = IamManager(settings,username)
   sns = SnsManager(settings)
 
 
   # Crear un usari:
-  iam.create_user(username)
+  iam.create_user()
   if iam.is_a_new_user():
     logging.info("User created: " + iam.show_user_name())
-    print "ID for user " +  iam.show_user_name() + ": " + iam.show_secretID()
-    print "Keys for user " +  iam.show_user_name() + ": " + iam.show_secretKey()
-
+    logging.info("ID for user " +  iam.show_user_name() + ": " + iam.show_secretID())
+    logging.info("Keys for user " +  iam.show_user_name() + ": " + iam.show_secretKey())
 
   # Create queue
   if sqsname:
