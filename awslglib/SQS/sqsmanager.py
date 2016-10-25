@@ -30,7 +30,7 @@ class SqsManager(object):
   def create_queue(self):
 
     if not self.validate_name():
-      logging.critical("Queue " + self.name + "is longer than allowed characters (80), choose a shorter name. Aborting")
+      logging.critical("Queue " + self.name + " is longer than allowed characters (80), choose a shorter name. Aborting")
       sys.exit(1)
 
     if self.queue_exists() is not None:
