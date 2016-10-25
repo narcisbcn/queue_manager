@@ -38,19 +38,13 @@ def main():
   snsname  = args.sns
   snsact   = args.snsact
 
-  # Example:
-  #username = 'sqs_stg-narcis'
-  #sqsname  = 'narcis-sqs'
-  #snsname  = 'narcis-sns'
-
-
   settings = Config()
   account = settings.get_param('account_id')
   region  = settings.get_param('region')
 
   # Username is mandatory
   if username is None:
-    logging.critical('you must provide an username')
+    logging.critical('You must provide an username')
     sys.exit(1)
 
   # Creating objects from inherit settings

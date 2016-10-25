@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-import time
-import re
-import os
+import sys
 import boto.iam
 import logging
 
