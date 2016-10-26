@@ -34,7 +34,7 @@ class SqsManager(object):
 
     if self.queue_exists() is not None:
       logging.critical("Queue " + self.name + "already exists, if you do proceed, you are going to overwrite the current policy, revoking then its permissions")
-      #sys.exit(1)
+      sys.exit(1)
 
     queue         = self.conn.create_queue(self.name)
     self.arn      = queue.arn

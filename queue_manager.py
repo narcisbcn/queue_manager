@@ -49,7 +49,7 @@ def main():
 
   # Creating objects from inherit settings
   iam = IamManager(settings,username)
-  sns = SnsManager(settings)
+
 
 
   # Crear un usari:
@@ -70,9 +70,10 @@ def main():
 
   # Create SNS and subscribe the SQS
   if snsname:
-    sns.create_topic(snsname)
-    topicarn = sns.get_topciarn()
-    sns.subscribe_to_topic(topicarn, queuearn)
+    sns = SnsManager(settings,snsname)
+    sns.create_topic()
+    sns.get_topciarn()
+    sns.subscribe_to_topic(queuearn)
 
     #Policy
     my_policy = generate_policy(sqs=sqsname, sns=snsname, sqs_perms=sqsact, iam=username, sns_perms=snsact, account=account, region=region)
@@ -80,22 +81,6 @@ def main():
     my_policy = generate_policy(sqs=sqsname, sqs_perms=sqsact, iam=username, account=account, region=region)
 
   sqs.attach_policy(my_policy)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

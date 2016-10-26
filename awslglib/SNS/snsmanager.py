@@ -6,10 +6,11 @@ import logging
 
 class SnsManager(object):
 
-  def __init__(self,config):
+  def __init__(self,config,name):
 
     self.config = config
     self.conn = self.__get_boto_conn()
+    self.name = name
     self.topicarn = None
 
 
@@ -23,20 +24,20 @@ class SnsManager(object):
     return conn
 
 
-  def create_topic(self, name):
+  def create_topic(self):
     """
     This creates a topic
     :param name: topc name
     :return: Nothing, topic is stored as an object
     """
-    topic = self.conn.create_topic(name)
+    topic = self.conn.create_topic(self.name)
     self.topicarn = topic['CreateTopicResponse']['CreateTopicResult']['TopicArn']
-    logging.info("SNS topic created successfully: " + name)
+    logging.info("SNS topic created successfully: " + self.name)
 
 
-  def subscribe_to_topic(self, arntopic, arnendpoint, protocol='sqs'):
-    self.conn.subscribe(arntopic, protocol, arnendpoint)
-    logging.info("Endpoint: " + arnendpoint + " subscribed to topic: " + arntopic)
+  def subscribe_to_topic(self, arnendpoint, protocol='sqs'):
+    self.conn.subscribe(self.topicarn, protocol, arnendpoint)
+    logging.info("Endpoint: " + arnendpoint + " subscribed to topic: " + self.topicarn)
 
 
   def get_topciarn(self):
