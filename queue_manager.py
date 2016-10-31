@@ -66,7 +66,7 @@ def main():
     queuearn =  sqs.get_arn()
     queueurl =  sqs.get_url()
     logging.info("SQS URL: " + queueurl)
-    while sqs.queue_exists() == None: continue
+    while sqs.queue_exists() == None: pass
 
   # Create SNS and subscribe the SQS
   if snsname:
