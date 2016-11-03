@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # PYTHON_ARGCOMPLETE_OK
 import argparse
-import os, sys
+import os, sys, time
 import logging
 
 from awslglib.core.config import Config
@@ -67,6 +67,7 @@ def main():
     queueurl =  sqs.get_url()
     logging.info("SQS URL: " + queueurl)
     while sqs.queue_exists() == None: pass
+    time.sleep(2)
 
   # Create SNS and subscribe the SQS
   if snsname:
