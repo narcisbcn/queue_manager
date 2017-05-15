@@ -42,7 +42,7 @@ Creating a simple sqs queue with limited privileges:
 
 Creating a sqs and sns and subscribe that sqs as a sns topic
 ```
-./queue_manager.py --iam sqs_stg-service4service_domain_events --sqs stg-service_domain_events --sqsact SendMessage DeleteMessage ReceiveMessage --sns stg-service_domain_events --snsact ReceiveMessage```
+./queue_manager.py --iam sqs_stg-service4service_domain_events --sqs stg-service_domain_events --sqsact SendMessage DeleteMessage ReceiveMessage --sns stg-service_domain_events --snsact ReceiveMessage
 ```
 
 
