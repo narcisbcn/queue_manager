@@ -50,8 +50,6 @@ def main():
   # Creating objects from inherit settings
   iam = IamManager(settings,username)
 
-
-
   # Crear un usari:
   iam.create_user()
   if iam.is_a_new_user():
@@ -66,8 +64,7 @@ def main():
     queuearn =  sqs.get_arn()
     queueurl =  sqs.get_url()
     logging.info("SQS URL: " + queueurl)
-    while sqs.queue_exists() == None: pass
-    time.sleep(2)
+    while sqs.queue_exists() is None: pass
 
   # Create SNS and subscribe the SQS
   if snsname:
@@ -82,11 +79,6 @@ def main():
     my_policy = generate_policy(sqs=sqsname, sqs_perms=sqsact, iam=username, account=account, region=region)
 
   sqs.attach_policy(my_policy)
-
-
-
-
-
 
 
 if __name__ == "__main__":

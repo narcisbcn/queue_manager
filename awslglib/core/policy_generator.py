@@ -21,12 +21,13 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms='*', sns=None, iam=None,
   _sns_perms = generate_action(sns_perms)
 
   sid  = str(random.randint(1000000000000,9999999999999))
+  q_id = "arn:aws:sqs:us-east-1:"+ account  + ":" + sqs + "/SQSDefaultPolicy"
 
   if sns is not None:
     sid2 = str(random.randint(1000000000000, 9999999999999))
     policy = json.dumps({
-       "Version": "2008-10-17",
-       "Id": sid,
+       "Version": "2012-10-17",
+       "Id": q_id,
         "Statement":  [
             {
                 "Sid": "Sid" + str(sid),
@@ -53,8 +54,8 @@ def generate_policy(sqs=None, effect='Allow', sqs_perms='*', sns=None, iam=None,
     }, sort_keys=None)
   else:
       policy = json.dumps({
-          "Version": "2008-10-17",
-          "Id": sid,
+          "Version": "2012-10-17",
+          "Id": q_id,
           "Statement": [
               {
                   "Sid": "Sid" + str(sid),
